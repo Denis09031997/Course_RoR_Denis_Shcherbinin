@@ -74,15 +74,3 @@ class Train
 
   attr_writer :current_speed
 end
-
-class PassengerTrain < Train
-  def initialize(number)
-    super(number, :passenger)
-  end
-end
-
-class CargoTrain < Train
-  def initialize(number)
-    super(number, :cargo)
-  end
-end
