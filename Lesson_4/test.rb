@@ -2,8 +2,8 @@ require_relative 'train'
 require_relative 'wagon'
 require_relative 'station'
 require_relative 'route'
-require_relative 'PassengerTrain'
-require_relative 'CargoTrain'
+require_relative 'passenger_train'
+require_relative 'cargo_train'
 
 station1 = Station.new('Орск')
 station2 = Station.new('Оренбург')
