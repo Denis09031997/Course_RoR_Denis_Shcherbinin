@@ -1,24 +1,30 @@
 require_relative 'company_manufacturer'
+require_relative 'validation'
 
 class Wagon
   include CompanyManufacturer
+  include Validation
   attr_reader :type
 
   def initialize(type)
-    validate_type!(type)
     @type = type
+    validate!
   end
-end
 
-def validate_type!(type)
-  raise "Тип вагона не задан" if type.nil? || ![:passenger, :cargo].include?(type)
-end
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
 
-def valid?
-  validate!
-  true
-rescue
-  false
+  private
+
+  def validate!
+    validate_presence('Тип вагона', type)
+    validate_format('Тип вагона', type, /^(passenger|cargo)$/i)
+  end
+
 end
 
 class PassengerWagon < Wagon

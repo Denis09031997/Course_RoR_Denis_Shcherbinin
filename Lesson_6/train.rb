@@ -1,22 +1,23 @@
 require_relative 'company_manufacturer'
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Train
   # Здесь публичные методы собраны - т.к они нужны непосредственно для управления поездом
   include CompanyManufacturer
   include InstanceCounter
+  include Validation
   attr_reader :number, :type, :current_speed, :current_station
 
+  validate :number, :format, /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
+  validate :type, :presence
+
   def initialize(number, type)
-    validate_number!(number)
     @number = number
     @type = type
     @wagons = []
     @current_speed = 0
-  end
-
-  def validate_number!(number)
-    raise "Неверный формат номера поезда" unless number =~ /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
+    validate!
   end
 
   def valid?
@@ -80,6 +81,13 @@ class Train
 
   # Вспомогательные методы - отвечают за внутреннюю работу класса и его потомков.
 
+  def validate!
+    validate_presence(:number)
+    validate_format(:number, /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/)
+    validate_presence(:type)
+    validate_format(:type, /^(passenger|cargo)$/i)
+  end
+
   def previous_station
     @route.stations[@index_station - 1] if @index_station > 0
   end
@@ -94,11 +102,4 @@ class Train
 
   attr_writer :current_speed
 
-  private
-
-  def validate!
-    raise "Номер поезда не задан" if number.nil? || number.empty?
-    raise "Неверный формат номера поезда" unless number =~ /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
-    raise "Тип поезда не задан" if type.nil? || ![:passenger, :cargo].include?(type)
-  end
 end

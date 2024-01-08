@@ -1,24 +1,25 @@
 require_relative 'instance_counter'
+require_relative 'validation'
+
 
 class Station
   @@all_station = []
   attr_reader :name, :trains
 
   include InstanceCounter
+  include Validation
+
+  validate :name, :presence
 
   def self.all
     @@all_station
   end
 
   def initialize(name)
-    validate_name!(name)
     @name = name
     @trains = []
+    validate!
     @@all_station << self
-  end
-
-  def validate_name!(name)
-    raise "Название станции не задано" if name.nil? || name.empty?
   end
 
   def valid?
@@ -27,6 +28,7 @@ class Station
   rescue
     false
   end
+
 
   def add_train(train)
     trains.push(train)
@@ -40,9 +42,5 @@ class Station
     trains.select {|train| train.type == type}
   end
 
-  private
 
-  def validate!
-    raise "Название станции не задано" if name.nil? || name.empty?
-  end
 end
