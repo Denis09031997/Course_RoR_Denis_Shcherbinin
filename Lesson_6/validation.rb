@@ -19,6 +19,13 @@ module Validation
       end
     end
 
+    def valid?
+      validate!
+      true
+    rescue
+      false
+    end
+
     private
 
     def validate_presence(name)

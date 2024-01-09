@@ -20,12 +20,7 @@ class Train
     validate!
   end
 
-  def valid?
-    validate!
-    true
-  rescue
-    false
-  end
+  
 
   def self.find(train_number)
     @@trains.find { |train| train.number == train_number }

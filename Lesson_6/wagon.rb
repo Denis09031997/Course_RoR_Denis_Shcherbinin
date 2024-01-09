@@ -11,12 +11,7 @@ class Wagon
     validate!
   end
 
-  def valid?
-    validate!
-    true
-  rescue
-    false
-  end
+  
 
   private
 

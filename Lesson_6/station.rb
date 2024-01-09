@@ -22,13 +22,6 @@ class Station
     @@all_station << self
   end
 
-  def valid?
-    validate!
-    true
-  rescue
-    false
-  end
-
 
   def add_train(train)
     trains.push(train)
